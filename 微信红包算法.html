@@ -1,0 +1,75 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Content-Language" content="zh-cn" />
+</head>
+<h1>javascript实现微信拼红包算法</h1>
+<h4>用户输入一个红包钱数，红包个数，要求每个红包必须大于0.01，小于总的钱数，随机发N个红包</h4>
+存入红包:<input type="text" name="red" id="red" style="width: 70px;margin-left: 5px">
+</br>
+红包的个数:<input type="text" name="red" id="num" style="margin-top: 3px;width: 70px;margin-left: 5px">
+</br>
+<input type="button" value="存入红包" onclick="f2()"  style="margin-top: 3px"/>
+<input type="button" value="抢红包" id="qiang" onclick="f1()"  style="margin-top: 3px"/>
+<div id="content"></div>
+<script type="text/javascript">
+var money;
+var n;
+function f2(){
+	this.money=document.getElementById('red').value;//这里把全局变量赋值
+	this.n=document.getElementById('num').value;
+	document.getElementById('red').setAttribute("disabled","disabled");
+	document.getElementById('num').setAttribute("disabled","disabled");
+	//document.getElementById("content").removeChild(true);
+	alert('存入完毕');
+}
+function f1(){
+	if(n>0 && n!=1){
+		var pingjun=money/n;//计算平均值
+		var suiji=Math.random();
+		//去除两种特殊情况0-1
+		if(suiji==0){
+			suiji=0.01;
+		}
+		if(suiji==1){
+			suiji=0.99;
+		}
+		 redpacket=suiji*2*pingjun;//红包的值在0.01~平均值的两倍之间
+		 redpacket=redpacket.toFixed(2);
+		 restmoney=money-redpacket;//剩余的钱钱
+		 this.money=restmoney;
+		 this.n--;//剩余红包的个数
+		var parent = document.getElementById('content');
+		var p = document.createElement("p");
+		p.setAttribute('class','p');
+		var sum=document.getElementById('num').value;
+　　　　p.innerHTML = (sum-n)+".你抢到了"+redpacket+"元,还剩余"+restmoney+"元,"+n+"个红包";
+　　　　parent.appendChild(p);
+  // alert("你抢到了"+redpacket+"元");
+}else if(n==1){
+	this.n--;//剩余红包的个数
+	 redpacket=money;//最后一个不再平均分
+	 redpacket=redpacket.toFixed(2);
+	 var parent = document.getElementById('content');
+		var p = document.createElement("p");
+		p.setAttribute('class','p');
+		var sum=document.getElementById('num').value;
+　　　　p.innerHTML = (sum-n)+".你抢到了"+redpacket+"元,还剩余"+restmoney+"元,"+n+"个红包";
+　　　　parent.appendChild(p);
+	// alert("你抢到了"+redpacket+"元");
+}else{
+	alert('红包已经被抢完,请从新存入');
+	document.getElementById('red').removeAttribute("disabled");
+	document.getElementById('num').removeAttribute("disabled");
+}
+console.log(n);
+console.log(restmoney);
+}
+</script>
+<style type="text/css">
+	.p{
+		color: blue;
+	}
+</style>
+</body>
+</html>
